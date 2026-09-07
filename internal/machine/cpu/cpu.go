@@ -1,8 +1,6 @@
 package cpu
 
 import (
-	"fmt"
-
 	"github.com/shotowon/giskv/internal/machine/bus"
 )
 
@@ -73,9 +71,15 @@ func (c *CPU) Cycle() {
 			c.addi(instruction)
 		}
 	case 0b0110011:
+		fn7 := instruction >> 25
 		switch fn3 {
 		case 0b000:
-			c.addSub(instruction)
+			switch fn7 {
+			case 0b00000000:
+				c.add(instruction)
+			case 0b01000000:
+				c.sub(instruction)
+			}
 		}
 	}
 	c.X[0] = uint32(0)
@@ -103,17 +107,16 @@ func (c *CPU) addi(instruction uint32) {
 	c.X[rd] = uint32(src)
 }
 
-func (c *CPU) addSub(instruction uint32) {
+func (c *CPU) add(instruction uint32) {
 	rd := (instruction >> 7) & 0b11111
 	rs1 := (instruction >> 15) & 0b11111
 	rs2 := (instruction >> 20) & 0b11111
-	fn7 := instruction >> 25
-	switch fn7 {
-	case 0b00000000:
-		c.X[rd] = c.X[rs1] + c.X[rs2]
-	case 0b01000000:
-		c.X[rd] = c.X[rs1] - c.X[rs2]
-	default:
-		panic(fmt.Sprintf("r-type add: invalid fn7 value: %x", fn7))
-	}
+	c.X[rd] = c.X[rs1] + c.X[rs2]
+}
+
+func (c *CPU) sub(instruction uint32) {
+	rd := (instruction >> 7) & 0b11111
+	rs1 := (instruction >> 15) & 0b11111
+	rs2 := (instruction >> 20) & 0b11111
+	c.X[rd] = c.X[rs1] - c.X[rs2]
 }
