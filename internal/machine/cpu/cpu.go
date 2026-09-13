@@ -73,6 +73,9 @@ func (c *CPU) Cycle() {
 		case 0b000:
 			c.addi(instruction)
 		case 0b001:
+			if fn7 != 0b0000000 {
+				panic("invalid instruction")
+			}
 			c.slli(instruction)
 		case 0b010:
 			c.slti(instruction)
