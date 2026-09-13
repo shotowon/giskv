@@ -89,6 +89,8 @@ func (c *CPU) Cycle() {
 			switch fn7 {
 			case 0b00000000:
 				c.srl(instruction)
+			case 0b00100000:
+				c.sra(instruction)
 			}
 		case 0b010:
 			switch fn7 {
@@ -158,6 +160,13 @@ func (c *CPU) srl(instruction uint32) {
 	rs1 := (instruction >> 15) & 0b11111
 	rs2 := (instruction >> 20) & 0b11111
 	c.X[rd] = c.X[rs1] >> (c.X[rs2] & 0b11111)
+}
+
+func (c *CPU) sra(instruction uint32) {
+	rd := (instruction >> 7) & 0b11111
+	rs1 := (instruction >> 15) & 0b11111
+	rs2 := (instruction >> 20) & 0b11111
+	c.X[rd] = uint32(int32(c.X[rs1]) >> (c.X[rs2] & 0b11111))
 }
 
 func (c *CPU) slt(instruction uint32) {
