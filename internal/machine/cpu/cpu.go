@@ -77,6 +77,8 @@ func (c *CPU) Cycle() {
 			c.sltiu(instruction)
 		case 0b100:
 			c.xori(instruction)
+		case 0b110:
+			c.ori(instruction)
 		}
 	// r-type
 	case 0b0110011:
@@ -180,6 +182,13 @@ func (c *CPU) xori(instruction uint32) {
 	rs1 := (instruction >> 15) & 0b11111
 	imm := int32(instruction) >> 20
 	c.X[rd] = c.X[rs1] ^ uint32(imm)
+}
+
+func (c *CPU) ori(instruction uint32) {
+	rd := (instruction >> 7) & 0b11111
+	rs1 := (instruction >> 15) & 0b11111
+	imm := int32(instruction) >> 20
+	c.X[rd] = c.X[rs1] | uint32(imm)
 }
 
 func (c *CPU) add(instruction uint32) {

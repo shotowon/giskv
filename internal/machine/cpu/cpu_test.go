@@ -45,6 +45,13 @@ func TestInstructions(t *testing.T) {
 			expected: 0b1011,
 		},
 		{
+			name:     "ORI",
+			file:     "tests/ori.bin",
+			cycles:   2,
+			reg:      cpu.R_t2,
+			expected: 0b1111,
+		},
+		{
 			name:     "ADD",
 			file:     "tests/add.bin",
 			cycles:   3,
