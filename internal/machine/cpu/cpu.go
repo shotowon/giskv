@@ -73,6 +73,8 @@ func (c *CPU) Cycle() {
 			c.addi(instruction)
 		case 0b010:
 			c.slti(instruction)
+		case 0b011:
+			c.sltiu(instruction)
 		}
 	// r-type
 	case 0b0110011:
@@ -154,6 +156,17 @@ func (c *CPU) slti(instruction uint32) {
 	rs1 := (instruction >> 15) & 0b11111
 	imm := int32(instruction) >> 20
 	if int32(c.X[rs1]) < imm {
+		c.X[rd] = 1
+		return
+	}
+	c.X[rd] = 0
+}
+
+func (c *CPU) sltiu(instruction uint32) {
+	rd := (instruction >> 7) & 0b11111
+	rs1 := (instruction >> 15) & 0b11111
+	imm := int32(instruction) >> 20
+	if c.X[rs1] < uint32(imm) {
 		c.X[rd] = 1
 		return
 	}
