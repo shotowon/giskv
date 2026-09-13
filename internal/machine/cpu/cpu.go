@@ -4,6 +4,8 @@ import (
 	"github.com/shotowon/giskv/internal/machine/bus"
 )
 
+const WordLenInBytes = 4
+
 type Register uint8
 
 const (
@@ -120,7 +122,7 @@ func (c *CPU) Cycle() {
 		}
 	}
 	c.X[0] = uint32(0)
-	c.PC += 4
+	c.PC += WordLenInBytes
 }
 
 func (c *CPU) Fetch32() uint32 {
