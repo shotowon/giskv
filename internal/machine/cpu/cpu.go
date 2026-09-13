@@ -65,12 +65,15 @@ func (c *CPU) Cycle() {
 	instruction := c.Fetch32()
 	opcode := instruction & 0b1111111
 	fn3 := (instruction >> 12) & 0b111
+	fn7 := instruction >> 25
 	switch opcode {
 	// i-type
 	case 0b0010011:
 		switch fn3 {
 		case 0b000:
 			c.addi(instruction)
+		case 0b001:
+			c.slli(instruction)
 		case 0b010:
 			c.slti(instruction)
 		case 0b011:
@@ -84,7 +87,6 @@ func (c *CPU) Cycle() {
 		}
 	// r-type
 	case 0b0110011:
-		fn7 := instruction >> 25
 		switch fn3 {
 		case 0b000:
 			switch fn7 {
@@ -198,6 +200,14 @@ func (c *CPU) andi(instruction uint32) {
 	rs1 := (instruction >> 15) & 0b11111
 	imm := int32(instruction) >> 20
 	c.X[rd] = c.X[rs1] & uint32(imm)
+}
+
+func (c *CPU) slli(instruction uint32) {
+	rd := (instruction >> 7) & 0b11111
+	rs1 := (instruction >> 15) & 0b11111
+	shamt := (instruction >> 20) & 0b11111
+
+	c.X[rd] = c.X[rs1] << shamt
 }
 
 func (c *CPU) add(instruction uint32) {
