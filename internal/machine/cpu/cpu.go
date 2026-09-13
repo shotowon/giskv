@@ -80,6 +80,8 @@ func (c *CPU) Cycle() {
 			c.sltiu(instruction)
 		case 0b100:
 			c.xori(instruction)
+		case 0b101:
+			c.srli(instruction)
 		case 0b110:
 			c.ori(instruction)
 		case 0b111:
@@ -208,6 +210,14 @@ func (c *CPU) slli(instruction uint32) {
 	shamt := (instruction >> 20) & 0b11111
 
 	c.X[rd] = c.X[rs1] << shamt
+}
+
+func (c *CPU) srli(instruction uint32) {
+	rd := (instruction >> 7) & 0b11111
+	rs1 := (instruction >> 15) & 0b11111
+	shamt := (instruction >> 20) & 0b11111
+
+	c.X[rd] = c.X[rs1] >> shamt
 }
 
 func (c *CPU) add(instruction uint32) {
