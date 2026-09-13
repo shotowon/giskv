@@ -37,6 +37,13 @@ func TestInstructions(t *testing.T) {
 			reg:      cpu.R_t2,
 			expected: 12,
 		},
+		{
+			name:     "SLT",
+			file:     "tests/slt.bin",
+			cycles:   3,
+			reg:      cpu.R_t2,
+			expected: 1,
+		},
 	}
 
 	for _, tt := range tests {
