@@ -73,6 +73,13 @@ func TestInstructions(t *testing.T) {
 			expected: 0b110100,
 		},
 		{
+			name:     "SRAI",
+			file:     "tests/srai.bin",
+			cycles:   2,
+			reg:      cpu.R_t2,
+			expected: 0b11111111111111111111111111110000,
+		},
+		{
 			name:     "ADD",
 			file:     "tests/add.bin",
 			cycles:   3,
