@@ -100,46 +100,46 @@ func (c *CPU) Cycle() {
 		switch fn3 {
 		case 0b000:
 			switch fn7 {
-			case 0b00000000:
+			case 0b0000000:
 				c.add(instruction)
-			case 0b00100000:
+			case 0b0100000:
 				c.sub(instruction)
 			}
 		case 0b001:
 			switch fn7 {
-			case 0b00000000:
+			case 0b0000000:
 				c.sll(instruction)
 			}
 		case 0b101:
 			switch fn7 {
-			case 0b00000000:
+			case 0b0000000:
 				c.srl(instruction)
-			case 0b00100000:
+			case 0b0100000:
 				c.sra(instruction)
 			}
 		case 0b010:
 			switch fn7 {
-			case 0b00000000:
+			case 0b0000000:
 				c.slt(instruction)
 			}
 		case 0b011:
 			switch fn7 {
-			case 0b00000000:
+			case 0b0000000:
 				c.sltu(instruction)
 			}
 		case 0b110:
 			switch fn7 {
-			case 0b00000000:
+			case 0b0000000:
 				c.or(instruction)
 			}
 		case 0b111:
 			switch fn7 {
-			case 0b00000000:
+			case 0b0000000:
 				c.and(instruction)
 			}
 		case 0b100:
 			switch fn7 {
-			case 0b00000000:
+			case 0b0000000:
 				c.xor(instruction)
 			}
 		}
