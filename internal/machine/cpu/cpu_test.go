@@ -31,6 +31,13 @@ func TestInstructions(t *testing.T) {
 			expected: 55,
 		},
 		{
+			name:     "SUB",
+			file:     "tests/sub.bin",
+			cycles:   3,
+			reg:      cpu.R_t2,
+			expected: 29,
+		},
+		{
 			name:     "SLL",
 			file:     "tests/sll.bin",
 			cycles:   3,

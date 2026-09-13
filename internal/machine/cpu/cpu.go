@@ -77,7 +77,7 @@ func (c *CPU) Cycle() {
 			switch fn7 {
 			case 0b00000000:
 				c.add(instruction)
-			case 0b01000000:
+			case 0b00100000:
 				c.sub(instruction)
 			}
 		case 0b001:
