@@ -71,7 +71,10 @@ func (c *CPU) Cycle() {
 		switch fn3 {
 		case 0b000:
 			c.addi(instruction)
+		case 0b010:
+			c.slti(instruction)
 		}
+	// r-type
 	case 0b0110011:
 		fn7 := instruction >> 25
 		switch fn3 {
@@ -144,6 +147,17 @@ func (c *CPU) addi(instruction uint32) {
 	imm := int32(instruction) >> 20
 	src := int32(c.X[rs1]) + imm
 	c.X[rd] = uint32(src)
+}
+
+func (c *CPU) slti(instruction uint32) {
+	rd := (instruction >> 7) & 0b11111
+	rs1 := (instruction >> 15) & 0b11111
+	imm := int32(instruction) >> 20
+	if int32(c.X[rs1]) < imm {
+		c.X[rd] = 1
+		return
+	}
+	c.X[rd] = 0
 }
 
 func (c *CPU) add(instruction uint32) {
