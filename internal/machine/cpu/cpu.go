@@ -95,6 +95,11 @@ func (c *CPU) Cycle() {
 			case 0b00000000:
 				c.sltu(instruction)
 			}
+		case 0b100:
+			switch fn7 {
+			case 0b00000000:
+				c.xor(instruction)
+			}
 		}
 	}
 	c.X[0] = uint32(0)
@@ -163,4 +168,11 @@ func (c *CPU) sltu(instruction uint32) {
 		return
 	}
 	c.X[rd] = 0
+}
+
+func (c *CPU) xor(instruction uint32) {
+	rd := (instruction >> 7) & 0b11111
+	rs1 := (instruction >> 15) & 0b11111
+	rs2 := (instruction >> 20) & 0b11111
+	c.X[rd] = c.X[rs1] ^ c.X[rs2]
 }

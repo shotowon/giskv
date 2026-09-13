@@ -51,6 +51,13 @@ func TestInstructions(t *testing.T) {
 			reg:      cpu.R_t2,
 			expected: 0,
 		},
+		{
+			name:     "XOR",
+			file:     "tests/xor.bin",
+			cycles:   3,
+			reg:      cpu.R_t2,
+			expected: 4,
+		},
 	}
 
 	for _, tt := range tests {
