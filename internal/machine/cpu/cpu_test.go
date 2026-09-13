@@ -38,6 +38,13 @@ func TestInstructions(t *testing.T) {
 			expected: 0,
 		},
 		{
+			name:     "XORI",
+			file:     "tests/xori.bin",
+			cycles:   2,
+			reg:      cpu.R_t2,
+			expected: 0b1011,
+		},
+		{
 			name:     "ADD",
 			file:     "tests/add.bin",
 			cycles:   3,
