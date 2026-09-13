@@ -1,19 +1,22 @@
 package cpu_test
 
 import (
+	"os"
 	"testing"
 
 	"github.com/shotowon/giskv/internal/machine/bus"
 	"github.com/shotowon/giskv/internal/machine/cpu"
 )
 
+func TestInstructions(t *testing.T) {
+}
+
 func TestADDI(t *testing.T) {
-	b := bus.Load([]byte{
-		0b10010011, // opcode I-type
-		0b00000010, // rd set to x5
-		0b10100000, //
-		0b00000010, // imm = 42
-	})
+	f, err := os.ReadFile("tests/addi.bin")
+	if err != nil {
+		t.Fatalf("failed to read test for add with error: %v", err)
+	}
+	b := bus.Load(f)
 	c := cpu.New(b)
 	c.Cycle()
 
@@ -25,24 +28,12 @@ func TestADDI(t *testing.T) {
 	}
 }
 
-func TestADD(t *testing.T) {
-	b := bus.Load([]byte{
-		0b10010011,
-		0b00000010,
-		0b10100000,
-		0b00000010, // x5 = 42 from addi test
-
-		0b10010011,
-		0b00000001,
-		0b11010000,
-		0b00000000, // x3 = 13 from addi test
-
-		// x7 = x3 + x5
-		0b10110011, // opcode R-Type
-		0b10000011, // register 7 dst, funct3 000 ADD-SUB
-		0b01010001, // add x3 + x5
-		0b00000000,
-	})
+func ADD(t *testing.T) {
+	f, err := os.ReadFile("tests/add.bin")
+	if err != nil {
+		t.Fatalf("failed to read test for add with error: %v", err)
+	}
+	b := bus.Load(f)
 	c := cpu.New(b)
 	c.Cycle()
 	c.Cycle()
@@ -57,25 +48,11 @@ func TestADD(t *testing.T) {
 }
 
 func TestSLL(t *testing.T) {
-	b := bus.Load([]byte{
-		// ADDI x5, x0, 2
-		0b10010011,
-		0b00000010,
-		0b00100000,
-		0b00000000,
-
-		// ADDI x3, x0, 3
-		0b10010011,
-		0b00000001,
-		0b00110000,
-		0b00000000,
-
-		// SLL x7, x3, x5
-		0b10110011,
-		0b10010011,
-		0b01010001,
-		0b00000000,
-	})
+	f, err := os.ReadFile("tests/sll.bin")
+	if err != nil {
+		t.Fatalf("failed to read test for add with error: %v", err)
+	}
+	b := bus.Load(f)
 
 	c := cpu.New(b)
 
