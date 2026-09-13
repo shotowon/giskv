@@ -55,3 +55,38 @@ func TestADD(t *testing.T) {
 		t.Fatalf("expected x7 to be: %d, got: %d", expected, got)
 	}
 }
+
+func TestSLL(t *testing.T) {
+	b := bus.Load([]byte{
+		// ADDI x5, x0, 2
+		0b10010011,
+		0b00000010,
+		0b00100000,
+		0b00000000,
+
+		// ADDI x3, x0, 3
+		0b10010011,
+		0b00000001,
+		0b00110000,
+		0b00000000,
+
+		// SLL x7, x3, x5
+		0b10110011,
+		0b10010011,
+		0b01010001,
+		0b00000000,
+	})
+
+	c := cpu.New(b)
+
+	c.Cycle()
+	c.Cycle()
+	c.Cycle()
+
+	expected := uint32(12)
+	got := c.X[cpu.R_t2]
+
+	if got != expected {
+		t.Fatalf("expected x7 to be: %d, got: %d", expected, got)
+	}
+}
