@@ -9,61 +9,60 @@ import (
 )
 
 func TestInstructions(t *testing.T) {
-}
-
-func TestADDI(t *testing.T) {
-	f, err := os.ReadFile("tests/addi.bin")
-	if err != nil {
-		t.Fatalf("failed to read test for add with error: %v", err)
+	tests := []struct {
+		name     string
+		file     string
+		cycles   int
+		reg      cpu.Register
+		expected uint32
+	}{
+		{
+			name:     "ADDI",
+			file:     "tests/addi.bin",
+			cycles:   1,
+			reg:      cpu.R_t0,
+			expected: 42,
+		},
+		{
+			name:     "ADD",
+			file:     "tests/add.bin",
+			cycles:   3,
+			reg:      cpu.R_t2,
+			expected: 55,
+		},
+		{
+			name:     "SLL",
+			file:     "tests/sll.bin",
+			cycles:   3,
+			reg:      cpu.R_t2,
+			expected: 12,
+		},
 	}
-	b := bus.Load(f)
-	c := cpu.New(b)
-	c.Cycle()
 
-	expected := uint32(42)
-	got := c.X[cpu.R_t0]
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			f, err := os.ReadFile(tt.file)
+			if err != nil {
+				t.Fatalf("failed to read test: %v", err)
+			}
 
-	if got != expected {
-		t.Fatalf("expected x5 to be: %d, got: %d", expected, got)
-	}
-}
+			b := bus.Load(f)
+			c := cpu.New(b)
 
-func ADD(t *testing.T) {
-	f, err := os.ReadFile("tests/add.bin")
-	if err != nil {
-		t.Fatalf("failed to read test for add with error: %v", err)
-	}
-	b := bus.Load(f)
-	c := cpu.New(b)
-	c.Cycle()
-	c.Cycle()
-	c.Cycle()
+			for range tt.cycles {
+				c.Cycle()
+			}
 
-	expected := uint32(55)
-	got := c.X[cpu.R_t2]
+			got := c.X[tt.reg]
 
-	if got != expected {
-		t.Fatalf("expected x7 to be: %d, got: %d", expected, got)
-	}
-}
-
-func TestSLL(t *testing.T) {
-	f, err := os.ReadFile("tests/sll.bin")
-	if err != nil {
-		t.Fatalf("failed to read test for add with error: %v", err)
-	}
-	b := bus.Load(f)
-
-	c := cpu.New(b)
-
-	c.Cycle()
-	c.Cycle()
-	c.Cycle()
-
-	expected := uint32(12)
-	got := c.X[cpu.R_t2]
-
-	if got != expected {
-		t.Fatalf("expected x7 to be: %d, got: %d", expected, got)
+			if got != tt.expected {
+				t.Fatalf(
+					"expected x%d to be: %d, got: %d",
+					tt.reg,
+					tt.expected,
+					got,
+				)
+			}
+		})
 	}
 }
