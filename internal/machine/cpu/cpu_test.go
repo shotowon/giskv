@@ -79,6 +79,13 @@ func TestInstructions(t *testing.T) {
 			reg:      cpu.R_t2,
 			expected: 4,
 		},
+		{
+			name:     "OR",
+			file:     "tests/or.bin",
+			cycles:   3,
+			reg:      cpu.R_t2,
+			expected: 0b1111,
+		},
 	}
 
 	for _, tt := range tests {
