@@ -86,6 +86,13 @@ func TestInstructions(t *testing.T) {
 			reg:      cpu.R_t2,
 			expected: 0b1111,
 		},
+		{
+			name:     "AND",
+			file:     "tests/and.bin",
+			cycles:   3,
+			reg:      cpu.R_t2,
+			expected: 0b1001,
+		},
 	}
 
 	for _, tt := range tests {
