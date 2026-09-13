@@ -85,6 +85,11 @@ func (c *CPU) Cycle() {
 			case 0b00000000:
 				c.sll(instruction)
 			}
+		case 0b010:
+			switch fn7 {
+			case 0b00000000:
+				c.slt(instruction)
+			}
 		}
 	}
 	c.X[0] = uint32(0)
@@ -126,9 +131,22 @@ func (c *CPU) sub(instruction uint32) {
 	c.X[rd] = c.X[rs1] - c.X[rs2]
 }
 
+// TODO: tests
 func (c *CPU) sll(instruction uint32) {
 	rd := (instruction >> 7) & 0b11111
 	rs1 := (instruction >> 15) & 0b11111
 	rs2 := (instruction >> 20) & 0b11111
 	c.X[rd] = c.X[rs1] << (c.X[rs2] & 0b11111)
+}
+
+// TODO: tests
+func (c *CPU) slt(instruction uint32) {
+	rd := (instruction >> 7) & 0b11111
+	rs1 := (instruction >> 15) & 0b11111
+	rs2 := (instruction >> 20) & 0b11111
+	if int32(c.X[rs1]) < int32(c.X[rs2]) {
+		c.X[rd] = 1
+		return
+	}
+	c.X[rd] = 0
 }
