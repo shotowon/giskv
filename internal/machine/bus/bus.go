@@ -14,6 +14,22 @@ func Load(program []byte) *Bus {
 	}
 }
 
+func (b *Bus) Read8(addr uint32) uint8 {
+	if int(addr) >= len(b.RAM) {
+		panic(fmt.Sprintf("bus: invalid memory read: crashing, addr: uint32(%d) hex(%x)", addr, addr))
+	}
+
+	return b.RAM[addr]
+}
+
+func (b *Bus) Write8(addr uint32, value uint8) {
+	if int(addr) >= len(b.RAM) {
+		panic(fmt.Sprintf("invalid memory write: crashing, addr: uint32(%d) hex(%x), value: uint8(%d) hex(%x)", addr, addr, value, value))
+	}
+
+	b.RAM[addr] = value
+}
+
 func (b *Bus) Read32(addr uint32) uint32 {
 	if int(addr)+4 > len(b.RAM) {
 		panic(fmt.Sprintf("bus: invalid memory read: crashing, addr: uint32(%d) hex(%x)", addr, addr))
