@@ -30,6 +30,23 @@ func (b *Bus) Write8(addr uint32, value uint8) {
 	b.RAM[addr] = value
 }
 
+func (b *Bus) Read16(addr uint32) uint16 {
+	if int(addr)+2 > len(b.RAM) {
+		panic(fmt.Sprintf("bus: invalid memory read: crashing, addr: uint32(%d) hex(%x)", addr, addr))
+	}
+
+	return uint16(b.RAM[addr]) | uint16(b.RAM[addr+1])<<8
+}
+
+func (b *Bus) Write16(addr uint32, value uint16) {
+	if int(addr)+2 > len(b.RAM) {
+		panic(fmt.Sprintf("bus: invalid memory write: crashing, addr: uint32(%d) hex(%x), value: uint16(%d) hex(%x)", addr, addr, value, value))
+	}
+
+	b.RAM[addr] = byte(value)
+	b.RAM[addr+1] = byte(value >> 8)
+}
+
 func (b *Bus) Read32(addr uint32) uint32 {
 	if int(addr)+4 > len(b.RAM) {
 		panic(fmt.Sprintf("bus: invalid memory read: crashing, addr: uint32(%d) hex(%x)", addr, addr))
@@ -40,7 +57,7 @@ func (b *Bus) Read32(addr uint32) uint32 {
 
 func (b *Bus) Write32(addr uint32, value uint32) {
 	if int(addr)+4 > len(b.RAM) {
-		panic(fmt.Sprintf("bus: invalid memory write: crashing, addr: uint32(%d) hex(%x)", addr, addr))
+		panic(fmt.Sprintf("bus: invalid memory write: crashing, addr: uint32(%d) hex(%x), value: uint16(%d) hex(%x)", addr, addr, value, value))
 	}
 
 	b.RAM[addr] = byte(value)
