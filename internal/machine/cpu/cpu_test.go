@@ -178,3 +178,23 @@ func TestInstructions(t *testing.T) {
 		})
 	}
 }
+
+func TestLB(t *testing.T) {
+	f, err := os.ReadFile("tests/lb.bin")
+	if err != nil {
+		t.Fatalf("failed to read test: %v", err)
+	}
+
+	b := bus.Load(f)
+	c := cpu.New(b)
+
+	c.Cycle()
+	c.Cycle()
+
+	if uint8(c.X[7]) != 0xe4 {
+		t.Fatalf(
+			"expected x7 == 0xff, got = %x",
+			c.X[7],
+		)
+	}
+}
