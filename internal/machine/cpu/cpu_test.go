@@ -232,3 +232,23 @@ func TestLH(t *testing.T) {
 		)
 	}
 }
+
+func TestLW(t *testing.T) {
+	f, err := os.ReadFile("tests/lw.bin")
+	if err != nil {
+		t.Fatalf("failed to read test: %v", err)
+	}
+
+	b := bus.Load(f)
+	c := cpu.New(b)
+
+	c.Cycle()
+	c.Cycle()
+
+	if c.X[7] != 0xa5c3f43f {
+		t.Fatalf(
+			"expected x7 == a5c3f43f, got = %x",
+			c.X[7],
+		)
+	}
+}
