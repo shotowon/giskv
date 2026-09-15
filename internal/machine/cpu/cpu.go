@@ -102,6 +102,8 @@ func (c *CPU) Cycle() {
 			c.lb(instruction)
 		case 0b001:
 			c.lh(instruction)
+		case 0b010:
+			c.lw(instruction)
 		}
 	case 0b0110011:
 		switch fn3 {
@@ -260,6 +262,15 @@ func (c *CPU) lh(instruction uint32) {
 
 	ptr := uint32(int32(c.X[rs1]) + int32(imm))
 	c.X[rd] = uint32(int16(c.bus.Read16(ptr)))
+}
+
+func (c *CPU) lw(instruction uint32) {
+	rd := (instruction >> 7) & 0b11111
+	rs1 := (instruction >> 15) & 0b11111
+	imm := int32(instruction) >> 20
+
+	ptr := uint32(int32(c.X[rs1]) + int32(imm))
+	c.X[rd] = c.bus.Read32(ptr)
 }
 
 func (c *CPU) add(instruction uint32) {
