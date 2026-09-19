@@ -200,7 +200,7 @@ func TestLB(t *testing.T) {
 
 	if uint8(c.X[7]) != 0xe4 {
 		t.Fatalf(
-			"expected x7 == 0xff, got = %x",
+			"expected x7 == 0xe4, got = %x",
 			uint8(c.X[7]),
 		)
 	}
