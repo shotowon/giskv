@@ -206,6 +206,33 @@ func TestLB(t *testing.T) {
 	}
 }
 
+func TestLBU(t *testing.T) {
+	f, err := os.ReadFile("tests/lbu.bin")
+	if err != nil {
+		t.Fatalf("failed to read test: %v", err)
+	}
+
+	b := bus.Load(f)
+	c := cpu.New(b)
+
+	c.Cycle()
+	c.Cycle()
+
+	if c.X[7] != 0x000000e4 {
+		t.Fatalf(
+			"expected x7 == 0x000000e4, got = %x",
+			c.X[7],
+		)
+	}
+
+	if uint8(c.X[7]) != 0xe4 {
+		t.Fatalf(
+			"expected x7 == 0xe4, got = %x",
+			uint8(c.X[7]),
+		)
+	}
+}
+
 func TestLH(t *testing.T) {
 	f, err := os.ReadFile("tests/lh.bin")
 	if err != nil {
